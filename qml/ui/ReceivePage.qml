@@ -6,6 +6,8 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 Page {
+	property string stringAddress
+
     anchors.fill: parent
     header: PageHeader {
         id: header
@@ -13,9 +15,9 @@ Page {
     }
 
 	Component.onCompleted: {
-		python.call('backend.get_display_address', [], function(addr) {
+		python.call('backend.get_address', [], function(addr) {
 			console.log('address: ' + addr);
-            address.text = addr;
+            stringAddress = addr;
         })
         python.call('backend.get_qr', [], function(qr) {
 			console.log(qr);
@@ -30,14 +32,15 @@ Page {
             left: parent.left
             right: parent.right
         }
-        text: ''
+        text: stringAddress.replace(":", ":\n")
         horizontalAlignment: Label.AlignHCenter
     }
+    
     Rectangle {
     	id: qrWrapper
 		anchors {
 			top: address.bottom
-			topMargin: 20
+			topMargin: units.gu(4)
             horizontalCenter: parent.horizontalCenter
 		}
         width: units.gu(30)
@@ -53,5 +56,17 @@ Page {
 			sourceSize.width: 1024
 			sourceSize.height: 1024
 		}
-       }
+	}
+	
+	Button {
+		id: copyToClipboard
+		anchors {
+			top: qrWrapper.bottom
+			topMargin: units.gu(4)
+            horizontalCenter: parent.horizontalCenter
+		}
+		text: i18n.tr('Copy to clipboard')
+		onClicked: Clipboard.push(address.text)
+		color: theme.palette.normal.positive
+	}
 }
