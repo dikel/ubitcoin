@@ -1,0 +1,22 @@
+{
+  "template": "cmake",
+  "kill": "qmlscene",
+  "dependencies_host": [
+    "python3-pip",
+    "python3-setuptools"
+  ],
+  "image_setup": {
+    "run": [
+      "python3 -m pip install pyqrcode asn1crypto bitcash"
+    ]
+  },
+  "install_data": {
+    "/usr/local/lib/python3.5/dist-packages/bitcash/": "${INSTALL_DIR}",
+    "/usr/local/lib/python3.5/dist-packages/cashaddress/": "${INSTALL_DIR}",
+    "/usr/local/lib/python3.5/dist-packages/base58.py": "${INSTALL_DIR}",
+    "/usr/local/lib/python3.5/dist-packages/coincurve/": "${INSTALL_DIR}",
+    "/usr/local/lib/python3.5/dist-packages/asn1crypto/": "${INSTALL_DIR}",
+    "/usr/local/lib/python3.5/dist-packages/pyqrcode/": "${INSTALL_DIR}",
+    "${ROOT}/libs/_libsecp256k1.cpython-35m-arm-linux-gnueabihf.so": "$INSTALL_DIR/coincurve"
+  }
+}
