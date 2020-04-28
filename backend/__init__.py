@@ -8,10 +8,7 @@ from backend.config import QR
 key = None
 
 def get_address():
-	return key.address
-
-def get_display_address():
-	return ':\n'.join(key.address.split(':'))
+	return key.address, QR
 	
 def key_exists():
 	return os.path.exists(PRIVATE_KEY)
@@ -20,9 +17,10 @@ def create_path(filename):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-        
-def get_qr():
-	return QR
+	
+def get_balance(fiat='usd'):
+	key.get_balance()
+	return key.balance_as('bch'), key.balance_as(fiat)
     
 if key_exists():
 	print('Debug: key exists')

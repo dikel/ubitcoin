@@ -11,18 +11,15 @@ Page {
     anchors.fill: parent
     header: PageHeader {
         id: header
-        title: i18n.tr('uBitcoin')
+        title: i18n.tr('Receive')
     }
 
 	Component.onCompleted: {
 		python.call('backend.get_address', [], function(addr) {
 			console.log('address: ' + addr);
-            stringAddress = addr;
+            stringAddress = addr[0];
+            qrAddress.source = addr[1];
         })
-        python.call('backend.get_qr', [], function(qr) {
-			console.log(qr);
-            qrAddress.source = qr;
-		})
 	}
 	
     Label {
@@ -66,7 +63,7 @@ Page {
             horizontalCenter: parent.horizontalCenter
 		}
 		text: i18n.tr('Copy to clipboard')
-		onClicked: Clipboard.push(address.text)
+		onClicked: Clipboard.push(stringAddress)
 		color: theme.palette.normal.positive
 	}
 }

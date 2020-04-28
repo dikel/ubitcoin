@@ -6,6 +6,8 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 Page {
+	property string fiat: "usd"
+
     anchors.fill: parent
     header: PageHeader {
         id: header
@@ -23,20 +25,47 @@ Page {
     }
 
 	Component.onCompleted: {
-		python.call('backend.get_display_address', [], function(addr) {
-			console.log('address: ' + addr);
-        })
+        python.call('backend.get_balance', [fiat], function(bal) {
+			bchBalance.text = bal[0] + " BCH"
+			fiatBalance.text = bal[1] + " " + fiat
+		})
 	}
 	
     Label {
-        id: balance
+        id: bchBalance
         anchors {
             top: header.bottom
             left: parent.left
             right: parent.right
         }
-        text: i18n.tr('Balance') + ': 0.0 BCH'
+        text: '0.0 BCH'
+        fontSize: "x-large"
+        horizontalAlignment: Label.AlignHCenter
+    }
+    
+    Label {
+        id: fiatBalance
+        anchors {
+            top: bchBalance.bottom
+            left: parent.left
+            right: parent.right
+        }
+        text: '0.0 ' + fiat
         fontSize: "large"
         horizontalAlignment: Label.AlignHCenter
+    }
+    
+    Timer {
+        id: balanceTimer
+        
+        running: true
+        repeat: true
+        interval: 10000
+        onTriggered: {
+			python.call('backend.get_balance', [fiat], function(bal) {
+				bchBalance.text = bal[0] + " BCH"
+				fiatBalance.text = bal[1] + " " + fiat
+			})
+        }
     }
 }
