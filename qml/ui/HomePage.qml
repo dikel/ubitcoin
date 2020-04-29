@@ -6,6 +6,7 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 Page {
+	id: homePage
 	property string fiat: "usd"
 
     anchors.fill: parent
@@ -53,6 +54,31 @@ Page {
         text: '0.0 ' + fiat
         fontSize: "large"
         horizontalAlignment: Label.AlignHCenter
+    }
+    
+    BottomEdge {
+		id: bottomEdge
+		hint {
+			enabled: visible
+			visible: bottomEdge.enabled
+			text: i18n.tr("Send")
+			status: BottomEdgeHint.Active
+		}
+		contentUrl: Qt.resolvedUrl("SendPage.qml")
+		height: homePage.height
+		preloadContent: true
+		
+		Binding {
+			target: bottomEdge.contentItem
+			property: "width"
+			value: bottomEdge.width
+		}
+
+		Binding {
+			target: bottomEdge.contentItem
+			property: "height"
+			value: bottomEdge.height
+		}
     }
     
     Timer {

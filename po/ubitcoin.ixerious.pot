@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-28 20:56+0000\n"
+"POT-Creation-Date: 2020-04-29 20:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,8 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/ui/HomePage.qml:14 ubitcoin.desktop.in.h:1
+#: ../qml/ui/HomePage.qml:15 ubitcoin.desktop.in.h:1
 msgid "uBitcoin"
+msgstr ""
+
+#: ../qml/ui/HomePage.qml:64 ../qml/ui/SendPage.qml:11
+msgid "Send"
 msgstr ""
 
 #: ../qml/ui/ReceivePage.qml:14
@@ -27,4 +31,8 @@ msgstr ""
 
 #: ../qml/ui/ReceivePage.qml:65
 msgid "Copy to clipboard"
+msgstr ""
+
+#: ../qml/ui/SendPage.qml:23
+msgid "Address"
 msgstr ""

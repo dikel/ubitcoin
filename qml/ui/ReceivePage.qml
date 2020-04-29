@@ -8,12 +8,12 @@ import io.thp.pyotherside 1.3
 Page {
 	property string stringAddress
 
-    anchors.fill: parent
+	anchors.fill: parent
     header: PageHeader {
         id: header
         title: i18n.tr('Receive')
     }
-
+    
 	Component.onCompleted: {
 		python.call('backend.get_address', [], function(addr) {
 			console.log('address: ' + addr);
