@@ -53,6 +53,7 @@ Page {
         }
         text: '0.0 ' + fiat
         fontSize: "large"
+        font.capitalization: Font.AllUppercase
         horizontalAlignment: Label.AlignHCenter
     }
     
@@ -66,7 +67,7 @@ Page {
 		}
 		contentUrl: Qt.resolvedUrl("SendPage.qml")
 		height: homePage.height
-		preloadContent: true
+		preloadContent: false
 		
 		Binding {
 			target: bottomEdge.contentItem

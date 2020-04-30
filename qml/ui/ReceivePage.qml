@@ -8,7 +8,7 @@ import io.thp.pyotherside 1.3
 Page {
 	property string stringAddress
 
-	anchors.fill: parent
+    anchors.fill: parent
     header: PageHeader {
         id: header
         title: i18n.tr('Receive')
@@ -28,6 +28,7 @@ Page {
             top: header.bottom
             left: parent.left
             right: parent.right
+			topMargin: units.gu(4)
         }
         text: stringAddress.replace(":", ":\n")
         horizontalAlignment: Label.AlignHCenter
@@ -59,7 +60,7 @@ Page {
 		id: copyToClipboard
 		anchors {
 			top: qrWrapper.bottom
-			topMargin: units.gu(4)
+			topMargin: units.gu(2)
             horizontalCenter: parent.horizontalCenter
 		}
 		text: i18n.tr('Copy to clipboard')
