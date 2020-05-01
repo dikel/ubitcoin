@@ -1,5 +1,5 @@
 {
-  "template": "cmake",
+  "builder": "cmake",
   "kill": "qmlscene",
   "dependencies_host": [
     "python3-pip",

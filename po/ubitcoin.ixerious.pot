@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 21:27+0000\n"
+"POT-Creation-Date: 2020-05-01 19:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,38 +17,43 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/ui/HomePage.qml:15 ubitcoin.desktop.in.h:1
+#: ../qml/ui/HomePage.qml:21 ubitcoin.desktop.in.h:1
 msgid "uBitcoin"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:65 ../qml/ui/SendPage.qml:11
+#: ../qml/ui/HomePage.qml:71 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/SendPage.qml:177
 msgid "Send"
 msgstr ""
 
-#: ../qml/ui/ReceivePage.qml:14
+#: ../qml/ui/ReceivePage.qml:18
 msgid "Receive"
 msgstr ""
 
-#: ../qml/ui/ReceivePage.qml:66
+#: ../qml/ui/ReceivePage.qml:70
 msgid "Copy to clipboard"
 msgstr ""
 
-#: ../qml/ui/SendPage.qml:32
+#: ../qml/ui/SendPage.qml:41
 msgid "Send To:"
 msgstr ""
 
-#: ../qml/ui/SendPage.qml:36
+#: ../qml/ui/SendPage.qml:46
 msgid "bitcoincash:"
 msgstr ""
 
-#: ../qml/ui/SendPage.qml:54
+#: ../qml/ui/SendPage.qml:70
 msgid "Paste"
 msgstr ""
 
-#: ../qml/ui/SendPage.qml:67
+#: ../qml/ui/SendPage.qml:87
 msgid "Scan QR"
 msgstr ""
 
-#: ../qml/ui/SendPage.qml:82
+#: ../qml/ui/SendPage.qml:103
 msgid "Amount:"
+msgstr ""
+
+#: ../qml/ui/SendPage.qml:164
+msgid "Send all"
 msgstr ""

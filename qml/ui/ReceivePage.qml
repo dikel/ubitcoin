@@ -6,22 +6,25 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 Page {
-	property string stringAddress
+	Settings {
+		id: addressSettings
+		property string address: ""
+		property string qr: ""
+	}
 
     anchors.fill: parent
     header: PageHeader {
         id: header
         title: i18n.tr('Receive')
     }
-    
+
 	Component.onCompleted: {
 		python.call('backend.get_address', [], function(addr) {
-			console.log('address: ' + addr);
-            stringAddress = addr[0];
-            qrAddress.source = addr[1];
+            addressSettings.address = addr[0];
+            addressSettings.qr = addr[1];
         })
 	}
-	
+
     Label {
         id: address
         anchors {
@@ -30,10 +33,10 @@ Page {
             right: parent.right
 			topMargin: units.gu(4)
         }
-        text: stringAddress.replace(":", ":\n")
+        text: addressSettings.address.replace(":", ":\n")
         horizontalAlignment: Label.AlignHCenter
     }
-    
+
     Rectangle {
     	id: qrWrapper
 		anchors {
@@ -53,9 +56,10 @@ Page {
 			anchors.fill: parent
 			sourceSize.width: 1024
 			sourceSize.height: 1024
+			source: addressSettings.qr
 		}
 	}
-	
+
 	Button {
 		id: copyToClipboard
 		anchors {
@@ -64,7 +68,7 @@ Page {
             horizontalCenter: parent.horizontalCenter
 		}
 		text: i18n.tr('Copy to clipboard')
-		onClicked: Clipboard.push(stringAddress)
+		onClicked: Clipboard.push(addressSettings.address)
 		color: theme.palette.normal.positive
 	}
 }

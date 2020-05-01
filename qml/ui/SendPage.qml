@@ -6,19 +6,28 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 Page {
+
+	function isAddressValid(callback) {
+		python.call('backend.is_address_valid', [sendToField.text], function(isValid) {
+			if(isValid) {
+				sendToField.color = theme.palette.normal.baseText
+			} else {
+				sendToField.color = "red"
+			}
+			if(!!callback) callback(isValid)
+		})
+	}
+	
     header: PageHeader {
         id: header
         title: i18n.tr('Send')
     }
+
 	Rectangle {
         anchors.fill: parent
         color: Theme.palette.normal.background
     }
-	Component.onCompleted: {
-		python.call('backend.get_address', [], function(addr) {
-			console.log('fff');
-        })
-	}
+
 	Label {
         id: sendToLabel
         fontSize: "large"
@@ -31,6 +40,7 @@ Page {
         }
         text: i18n.tr('Send To:')
     }
+
 	TextArea {
 		id: sendToField
 		placeholderText: i18n.tr('bitcoincash:')
@@ -43,7 +53,13 @@ Page {
 			rightMargin: units.gu(4)
 			topMargin: units.gu(1)
 		}
+		onTextChanged: {
+			if(focus) {
+				color = theme.palette.normal.baseText
+			}
+		}
 	}
+
 	Button {
 		id: pasteButton
 		anchors {
@@ -53,10 +69,14 @@ Page {
 		}
 		text: i18n.tr('Paste')
 		width: units.gu(16)
-		onClicked: sendToField.text = Clipboard.data.text
-		color: theme.palette.normal.positive
+		onClicked: {
+			sendToField.text = Clipboard.data.text
+			isAddressValid()
+		}
+		color: theme.palette.normal.base
 	}
-	
+
+	// Probably open Tagger in the future
 	Button {
 		id: scanButton
 		anchors {
@@ -66,9 +86,10 @@ Page {
 		}
 		text: i18n.tr('Scan QR')
 		width: units.gu(16)
-		onClicked: console.log("Not supported yet")
+		enabled: false
 		color: theme.palette.normal.base
 	}
+
 	Label {
         id: amountLabel
         fontSize: "large"
@@ -81,6 +102,7 @@ Page {
         }
         text: i18n.tr('Amount:')
     }
+
     TextField {
 		id: bchAmountField
 		anchors {
@@ -91,9 +113,21 @@ Page {
 		placeholderText: 'BCH'
 		text: ""
 		width: units.gu(16)
-		onTextChanged: console.log("Text has changed to:", text)
+		onTextChanged: {
+			if(focus) {
+				color = theme.palette.normal.baseText
+				if(text){
+					python.call('backend.bch_to_fiat', [text, balanceSettings.fiat], function(fiat) {
+						fiatAmountField.text = fiat
+					})
+				} else {
+					fiatAmountField.text = ""
+				}
+			}
+		}
 		inputMethodHints: Qt.ImhFormattedNumbersOnly
     }
+
     TextField {
 		id: fiatAmountField
 		anchors {
@@ -101,11 +135,62 @@ Page {
             right: sendToField.right
 			topMargin: units.gu(1)
 		}
-		placeholderText: fiat
+		placeholderText: balanceSettings.fiat
         font.capitalization: Font.AllUppercase
 		text: ""
 		width: units.gu(16)
-		onTextChanged: console.log("Text has changed to:", text)
+		onTextChanged: {
+			if(focus) {
+				color = theme.palette.normal.baseText
+				if(text){
+					python.call('backend.fiat_to_bch', [text, balanceSettings.fiat], function(bch) {
+						bchAmountField.text = bch
+					})
+				} else {
+					bchAmountField.text = ""
+				}
+			}
+		}
 		inputMethodHints: Qt.ImhFormattedNumbersOnly
     }
+    
+    Button {
+		id: sendAllButton
+		anchors {
+			top: bchAmountField.bottom
+			topMargin: units.gu(2)
+			left: sendToField.left
+		}
+		text: i18n.tr('Send all')
+		width: units.gu(16)
+		enabled: false
+		color: theme.palette.normal.base
+	}
+
+	Button {
+		id: sendButton
+		anchors {
+			top: fiatAmountField.bottom
+			topMargin: units.gu(2)
+			right: sendToField.right
+		}
+		text: i18n.tr('Send')
+		width: units.gu(16)
+		color: theme.palette.normal.positive
+		onClicked: {
+			isAddressValid(function(isValid) {
+			const amount = parseFloat(bchAmountField.text)
+				if (isValid && !!amount && amount > 0 && amount < balanceSettings.bchBalance) {
+					python.call('backend.send', [sendToField.text, amount], function(txId) {
+						if(!!txId) {
+							console.log(txId)
+							bottomEdge.collapse()
+						} else {
+							console.log("tx error")
+						}
+					})
+				}
+			})
+		}
+	}
 }

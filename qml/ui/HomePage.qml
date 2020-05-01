@@ -7,7 +7,13 @@ import io.thp.pyotherside 1.3
 
 Page {
 	id: homePage
-	property string fiat: "usd"
+	
+	Settings {
+		id: balanceSettings
+		property string fiat: "usd"
+		property string bchBalance: "0.0"
+		property string fiatBalance: "0.0"
+	}
 
     anchors.fill: parent
     header: PageHeader {
@@ -26,32 +32,32 @@ Page {
     }
 
 	Component.onCompleted: {
-        python.call('backend.get_balance', [fiat], function(bal) {
-			bchBalance.text = bal[0] + " BCH"
-			fiatBalance.text = bal[1] + " " + fiat
+        python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
+			balanceSettings.bchBalance = bal[0]
+			balanceSettings.fiatBalance = bal[1]
 		})
 	}
 	
     Label {
-        id: bchBalance
+        id: bchBalanceLabel
         anchors {
             top: header.bottom
             left: parent.left
             right: parent.right
         }
-        text: '0.0 BCH'
+        text: balanceSettings.bchBalance + " BCH"
         fontSize: "x-large"
         horizontalAlignment: Label.AlignHCenter
     }
     
     Label {
-        id: fiatBalance
+        id: fiatBalanceLabel
         anchors {
-            top: bchBalance.bottom
+            top: bchBalanceLabel.bottom
             left: parent.left
             right: parent.right
         }
-        text: '0.0 ' + fiat
+        text: balanceSettings.fiatBalance + " " + balanceSettings.fiat
         fontSize: "large"
         font.capitalization: Font.AllUppercase
         horizontalAlignment: Label.AlignHCenter
@@ -67,7 +73,7 @@ Page {
 		}
 		contentUrl: Qt.resolvedUrl("SendPage.qml")
 		height: homePage.height
-		preloadContent: false
+		preloadContent: true
 		
 		Binding {
 			target: bottomEdge.contentItem
@@ -89,9 +95,9 @@ Page {
         repeat: true
         interval: 10000
         onTriggered: {
-			python.call('backend.get_balance', [fiat], function(bal) {
-				bchBalance.text = bal[0] + " BCH"
-				fiatBalance.text = bal[1] + " " + fiat
+			python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
+				balanceSettings.bchBalance = bal[0]
+				balanceSettings.fiatBalance = bal[1]
 			})
         }
     }
