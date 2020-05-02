@@ -8,6 +8,8 @@ import io.thp.pyotherside 1.3
 Page {
 	id: homePage
 	
+	property ListModel txsModel: ListModel {}
+	
 	Settings {
 		id: balanceSettings
 		property string fiat: "usd"
@@ -22,6 +24,13 @@ Page {
         
         trailingActionBar.actions: [
 			Action {
+				text: "Informatin"
+				iconName: "info"
+				onTriggered: {
+					pageStack.push(Qt.resolvedUrl("InfoPage.qml"))
+				}
+			},
+			Action {
 				text: "Receive"
 				iconName: "import"
 				onTriggered: {
@@ -32,9 +41,19 @@ Page {
     }
 
 	Component.onCompleted: {
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
+		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
         python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
 			balanceSettings.bchBalance = bal[0]
 			balanceSettings.fiatBalance = bal[1]
+		})
+		python.call('backend.get_transactions', [], function(txs) {
+			console.log(txs)
+			console.log(JSON.parse(txs).id)
 		})
 	}
 	
@@ -61,6 +80,32 @@ Page {
         fontSize: "large"
         font.capitalization: Font.AllUppercase
         horizontalAlignment: Label.AlignHCenter
+    }
+    
+    UbuntuListView {
+		anchors {
+			top: fiatBalanceLabel.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+		}
+		currentIndex: -1
+		model: txsModel
+		delegate: ListItem {
+			Label {
+				text: address.split(":")[1].substr(0, 20) + ".."
+			}
+			leadingActions: ListItemActions {
+				actions: [
+					Action {
+						id: deleteAction
+						objectName: "deleteAction"
+						iconName: "delete"
+						text: i18n.tr("Delete")
+					}
+				]
+			}
+		}
     }
     
     BottomEdge {
@@ -100,5 +145,16 @@ Page {
 				balanceSettings.fiatBalance = bal[1]
 			})
         }
+    }
+    
+    Component {
+		id: txDelegate
+		Row {
+			spacing: 10
+			Label { 
+			text: id 
+			color: theme.palette.normal.baseText
+			}
+		}
     }
 }

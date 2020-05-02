@@ -1,9 +1,11 @@
 import os
+import json
 
 import pyqrcode
 from bitcash import PrivateKeyTestnet # Replace
 from bitcash.network import currency_to_satoshi_cached
 from bitcash.network import satoshi_to_currency_cached
+from bitcash.network import NetworkAPI
 from cashaddress import convert
 
 from backend.config import PRIVATE_KEY
@@ -25,6 +27,13 @@ def create_path(filename):
 def get_balance(fiat='usd'):
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
+	
+def get_transactions():
+	tx1 = NetworkAPI.get_transaction_testnet(key.get_transactions()[0]) # Remove testnet
+	tx = {'id': tx1.txid, 'block': tx1.block }
+	jsontx = json.dumps(tx)
+	print(jsontx)
+	return jsontx
 	
 def bch_to_fiat(amount, fiat='usd'):
 	satoshi = currency_to_satoshi_cached(amount, 'bch')
