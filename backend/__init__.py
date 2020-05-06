@@ -28,11 +28,23 @@ def get_balance(fiat='usd'):
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
 	
-def get_transactions():
-	tx1 = NetworkAPI.get_transaction_testnet(key.get_transactions()[0]) # Remove testnet
-	tx = {'id': tx1.txid, 'block': tx1.block }
+def get_all_transaction_ids():
+	return key.get_transactions()
+	
+def get_transaction_details(id):
+	transaction = NetworkAPI.get_transaction_testnet(id) # Remove testnet
+	is_sent = key.address in list(map(lambda txin: txin.address, transaction.inputs))
+	address = None
+	if is_sent:
+		address = list(map(lambda txout: txout.address, transaction.outputs))[0]
+	else:
+		address = list(map(lambda txin: txin.address, transaction.inputs))[0]
+	tx = {'id': transaction.txid,
+		'inputs': list(map(lambda txin: '{:f}'.format(txin.amount), transaction.inputs)),
+		'outputs': list(map(lambda txout: '{:f}'.format(txout.amount), transaction.outputs)),
+		'is_sent': is_sent,
+		'address': address}
 	jsontx = json.dumps(tx)
-	print(jsontx)
 	return jsontx
 	
 def bch_to_fiat(amount, fiat='usd'):

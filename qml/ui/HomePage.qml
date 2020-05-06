@@ -41,19 +41,20 @@ Page {
     }
 
 	Component.onCompleted: {
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
-		txsModel.append({"address": "bchtest:qrqcmf7gvsrsny0zvrtz0677fyfu5hvrhya7nj5e40"})
         python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
 			balanceSettings.bchBalance = bal[0]
 			balanceSettings.fiatBalance = bal[1]
 		})
-		python.call('backend.get_transactions', [], function(txs) {
-			console.log(txs)
-			console.log(JSON.parse(txs).id)
+		python.call('backend.get_all_transaction_ids', [], function(txs) {
+			const txsDiff = txs.length - txsModel.count
+			const newTxs = txs.slice(0, txsDiff)
+			console.log(newTxs)
+			for (var txid in newTxs.reverse()) {
+				python.call('backend.get_transaction_details', [newTxs[txid]], function(tx) {
+					console.log(tx)
+					txsModel.insert(0, JSON.parse(tx))
+				})
+			}
 		})
 	}
 	
@@ -75,6 +76,7 @@ Page {
             top: bchBalanceLabel.bottom
             left: parent.left
             right: parent.right
+			bottomMargin: units.gu(2)
         }
         text: balanceSettings.fiatBalance + " " + balanceSettings.fiat
         fontSize: "large"
@@ -89,11 +91,17 @@ Page {
             right: parent.right
             bottom: parent.bottom
 		}
+		clip: true
 		currentIndex: -1
 		model: txsModel
 		delegate: ListItem {
 			Label {
-				text: address.split(":")[1].substr(0, 20) + ".."
+				id: txLabel
+				text: address.split(':')[1].substr(0, 20) + '..'
+			}
+			Label {
+				anchors.top: txLabel.bottom
+				text: (!!is_sent ? "Sent" : "Received")
 			}
 			leadingActions: ListItemActions {
 				actions: [
@@ -145,16 +153,5 @@ Page {
 				balanceSettings.fiatBalance = bal[1]
 			})
         }
-    }
-    
-    Component {
-		id: txDelegate
-		Row {
-			spacing: 10
-			Label { 
-			text: id 
-			color: theme.palette.normal.baseText
-			}
-		}
     }
 }
