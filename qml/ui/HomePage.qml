@@ -103,6 +103,17 @@ Page {
 				anchors.top: txLabel.bottom
 				text: (!!is_sent ? "Sent" : "Received")
 			}
+			Label {
+				anchors{
+					right: parent.right
+					top: parent.top
+					bottom: parent.bottom
+				}
+				verticalAlignment: Label.AlignVCenter
+				text: (!!is_sent ? "-" : "+") + amount
+				color: (!!is_sent ? "red" : "green")
+				fontSize: "large"
+			}
 			leadingActions: ListItemActions {
 				actions: [
 					Action {

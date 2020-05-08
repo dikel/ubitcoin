@@ -1,5 +1,6 @@
 import os
 import json
+from functools import reduce
 
 import pyqrcode
 from bitcash import PrivateKeyTestnet # Replace
@@ -25,6 +26,7 @@ def create_path(filename):
         os.makedirs(dirname)
 	
 def get_balance(fiat='usd'):
+	#BitpayRates.currency_to_satoshi('usd')
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
 	
@@ -35,15 +37,20 @@ def get_transaction_details(id):
 	transaction = NetworkAPI.get_transaction_testnet(id) # Remove testnet
 	is_sent = key.address in list(map(lambda txin: txin.address, transaction.inputs))
 	address = None
+	amount = None
 	if is_sent:
 		address = list(map(lambda txout: txout.address, transaction.outputs))[0]
+		amount = '{:f}'.format(transaction.outputs[0].amount + transaction.amount_fee)
 	else:
 		address = list(map(lambda txin: txin.address, transaction.inputs))[0]
+		amount = '{:f}'.format(next(txout.amount for txout in transaction.outputs if txout.address == key.address))
+	amount = satoshi_to_currency_cached(int(amount), 'bch')
 	tx = {'id': transaction.txid,
 		'inputs': list(map(lambda txin: '{:f}'.format(txin.amount), transaction.inputs)),
 		'outputs': list(map(lambda txout: '{:f}'.format(txout.amount), transaction.outputs)),
 		'is_sent': is_sent,
-		'address': address}
+		'address': address,
+		'amount': amount}
 	jsontx = json.dumps(tx)
 	return jsontx
 	
