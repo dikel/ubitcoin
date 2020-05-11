@@ -16,23 +16,23 @@ key = None
 
 def get_address():
 	return key.address, QR
-	
+
 def key_exists():
 	return os.path.exists(PRIVATE_KEY)
-	
+
 def create_path(filename):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-	
+
 def get_balance(fiat='usd'):
 	#BitpayRates.currency_to_satoshi('usd')
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
-	
+
 def get_all_transaction_ids():
 	return key.get_transactions()
-	
+
 def get_transaction_details(id):
 	transaction = NetworkAPI.get_transaction_testnet(id) # Remove testnet
 	is_sent = key.address in list(map(lambda txin: txin.address, transaction.inputs))
@@ -44,6 +44,7 @@ def get_transaction_details(id):
 	else:
 		address = list(map(lambda txin: txin.address, transaction.inputs))[0]
 		amount = '{:f}'.format(next(txout.amount for txout in transaction.outputs if txout.address == key.address))
+
 	amount = satoshi_to_currency_cached(int(amount), 'bch')
 	tx = {'id': transaction.txid,
 		'inputs': list(map(lambda txin: '{:f}'.format(txin.amount), transaction.inputs)),
@@ -53,18 +54,18 @@ def get_transaction_details(id):
 		'amount': amount}
 	jsontx = json.dumps(tx)
 	return jsontx
-	
+
 def bch_to_fiat(amount, fiat='usd'):
 	satoshi = currency_to_satoshi_cached(amount, 'bch')
 	return satoshi_to_currency_cached(satoshi, fiat)
-	
+
 def fiat_to_bch(amount, fiat='usd'):
 	satoshi = currency_to_satoshi_cached(amount, fiat)
 	return satoshi_to_currency_cached(satoshi, 'bch')
-	
+
 def is_address_valid(address):
 	return convert.is_valid(address)
-	
+
 def send(address, amount):
 	outputs = [
 		(address, amount, 'bch'),
@@ -73,7 +74,7 @@ def send(address, amount):
 		return key.send(outputs)
 	except:
 		return false
-    
+
 if key_exists():
 	print('Debug: key exists')
 	priv_key = open(PRIVATE_KEY, 'r')

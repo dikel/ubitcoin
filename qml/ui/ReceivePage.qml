@@ -12,45 +12,45 @@ Page {
 		property string qr: ""
 	}
 
-    anchors.fill: parent
-    header: PageHeader {
-        id: header
-        title: i18n.tr('Receive')
-    }
+  anchors.fill: parent
+  header: PageHeader {
+    id: header
+    title: i18n.tr('Receive')
+  }
 
 	Component.onCompleted: {
 		python.call('backend.get_address', [], function(addr) {
-            addressSettings.address = addr[0];
-            addressSettings.qr = addr[1];
-        })
+      addressSettings.address = addr[0];
+      addressSettings.qr = addr[1];
+    })
 	}
 
-    Label {
-        id: address
-        anchors {
-            top: header.bottom
-            left: parent.left
-            right: parent.right
+  Label {
+    id: address
+    anchors {
+      top: header.bottom
+      left: parent.left
+      right: parent.right
 			topMargin: units.gu(4)
-        }
-        text: addressSettings.address.replace(":", ":\n")
-        horizontalAlignment: Label.AlignHCenter
     }
+    text: addressSettings.address.replace(":", ":\n")
+    horizontalAlignment: Label.AlignHCenter
+  }
 
-    Rectangle {
-    	id: qrWrapper
+  Rectangle {
+    id: qrWrapper
 		anchors {
 			top: address.bottom
 			topMargin: units.gu(4)
-            horizontalCenter: parent.horizontalCenter
+      horizontalCenter: parent.horizontalCenter
 		}
-        width: units.gu(30)
-        height: units.gu(30)
+    width: units.gu(30)
+    height: units.gu(30)
 		color: "white"
 		border.color: "black"
 		border.width: 2
 		radius: 20
-			
+
 		Image {
 			id: qrAddress
 			anchors.fill: parent
@@ -65,7 +65,7 @@ Page {
 		anchors {
 			top: qrWrapper.bottom
 			topMargin: units.gu(2)
-            horizontalCenter: parent.horizontalCenter
+      horizontalCenter: parent.horizontalCenter
 		}
 		text: i18n.tr('Copy to clipboard')
 		onClicked: Clipboard.push(addressSettings.address)

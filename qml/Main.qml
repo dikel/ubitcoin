@@ -6,34 +6,34 @@ import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
 
 MainView {
-    id: root
-    objectName: 'mainView'
-    applicationName: 'ubitcoin.ixerious'
-    automaticOrientation: true
+  id: root
+  objectName: 'mainView'
+  applicationName: 'ubitcoin.ixerious'
+  automaticOrientation: true
 
-    width: units.gu(45)
-    height: units.gu(75)
-   
-    PageStack {
-        id: mainPageStack
-    }
+  width: units.gu(45)
+  height: units.gu(75)
+
+  PageStack {
+    id: mainPageStack
+  }
+  Component.onCompleted: {
+	   mainPageStack.push(Qt.resolvedUrl("ui/HomePage.qml"))
+  }
+
+  Python {
+    id: python
+
     Component.onCompleted: {
-		mainPageStack.push(Qt.resolvedUrl("ui/HomePage.qml"))
+      addImportPath(Qt.resolvedUrl('../'))
+
+      importModule('backend', function() {
+        console.log('Debug: python loaded')
+      });
     }
 
-    Python {
-        id: python
-
-        Component.onCompleted: {
-            addImportPath(Qt.resolvedUrl('../'))
-
-            importModule('backend', function() {
-                console.log('Debug: python loaded')
-            });
-        }
-
-        onError: {
-            console.log('python error: ' + traceback)
-        }
+    onError: {
+      console.log('python error: ' + traceback)
     }
+  }
 }

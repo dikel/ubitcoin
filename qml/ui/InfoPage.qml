@@ -7,21 +7,21 @@ import io.thp.pyotherside 1.3
 
 Page {
 
-    anchors.fill: parent
-    header: PageHeader {
-        id: header
-        title: i18n.tr('Informaion')
-    }
+  anchors.fill: parent
+  header: PageHeader {
+    id: header
+    title: i18n.tr('Informaion')
+  }
 
-    Label {
-        id: address
-        anchors {
-            top: header.bottom
-            left: parent.left
-            right: parent.right
+  Label {
+    id: address
+    anchors {
+      top: header.bottom
+      left: parent.left
+      right: parent.right
 			topMargin: units.gu(4)
-        }
-        text: "Something"
-        horizontalAlignment: Label.AlignHCenter
     }
+    text: "Something"
+    horizontalAlignment: Label.AlignHCenter
+  }
 }

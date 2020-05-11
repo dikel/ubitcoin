@@ -17,29 +17,29 @@ Page {
 			if(!!callback) callback(isValid)
 		})
 	}
-	
-    header: PageHeader {
-        id: header
-        title: i18n.tr('Send')
-    }
+
+  header: PageHeader {
+    id: header
+    title: i18n.tr('Send')
+  }
 
 	Rectangle {
-        anchors.fill: parent
-        color: Theme.palette.normal.background
-    }
+    anchors.fill: parent
+    color: Theme.palette.normal.background
+  }
 
 	Label {
-        id: sendToLabel
-        fontSize: "large"
-        anchors {
-            top: header.bottom
-            left: parent.left
-            right: parent.right
+  	id: sendToLabel
+    fontSize: "large"
+    anchors {
+      top: header.bottom
+      left: parent.left
+      right: parent.right
 			topMargin: units.gu(2)
 			leftMargin: units.gu(4)
-        }
-        text: i18n.tr('Send To:')
     }
+    text: i18n.tr('Send To:')
+  }
 
 	TextArea {
 		id: sendToField
@@ -47,8 +47,8 @@ Page {
 		autoSize: true
 		anchors {
 			top: sendToLabel.bottom
-            left: parent.left
-            right: parent.right
+      left: parent.left
+      right: parent.right
 			leftMargin: units.gu(4)
 			rightMargin: units.gu(4)
 			topMargin: units.gu(1)
@@ -91,23 +91,23 @@ Page {
 	}
 
 	Label {
-        id: amountLabel
-        fontSize: "large"
-        anchors {
-            top: scanButton.bottom
-            left: parent.left
-            right: parent.right
+    id: amountLabel
+    fontSize: "large"
+    anchors {
+      top: scanButton.bottom
+      left: parent.left
+      right: parent.right
 			topMargin: units.gu(4)
 			leftMargin: units.gu(4)
-        }
-        text: i18n.tr('Amount:')
     }
+    text: i18n.tr('Amount:')
+  }
 
-    TextField {
+  TextField {
 		id: bchAmountField
 		anchors {
 			top: amountLabel.bottom
-            left: sendToField.left
+      left: sendToField.left
 			topMargin: units.gu(1)
 		}
 		placeholderText: 'BCH'
@@ -126,17 +126,17 @@ Page {
 			}
 		}
 		inputMethodHints: Qt.ImhFormattedNumbersOnly
-    }
+  }
 
-    TextField {
+  TextField {
 		id: fiatAmountField
 		anchors {
 			top: amountLabel.bottom
-            right: sendToField.right
+      right: sendToField.right
 			topMargin: units.gu(1)
 		}
 		placeholderText: balanceSettings.fiat
-        font.capitalization: Font.AllUppercase
+    font.capitalization: Font.AllUppercase
 		text: ""
 		width: units.gu(16)
 		onTextChanged: {
@@ -153,8 +153,8 @@ Page {
 		}
 		inputMethodHints: Qt.ImhFormattedNumbersOnly
     }
-    
-    Button {
+
+  Button {
 		id: sendAllButton
 		anchors {
 			top: bchAmountField.bottom
@@ -179,17 +179,34 @@ Page {
 		color: theme.palette.normal.positive
 		onClicked: {
 			isAddressValid(function(isValid) {
-			const amount = parseFloat(bchAmountField.text)
-				if (isValid && !!amount && amount > 0 && amount < balanceSettings.bchBalance) {
+				const amount = parseFloat(bchAmountField.text)
+				if (isValid && !!amount && amount > 0 && amount < balanceSettings.bchBalance && !sendTimer.running) {
 					python.call('backend.send', [sendToField.text, amount], function(txId) {
 						if(!!txId) {
-							console.log(txId)
+							sendTimer.txId = txId
+							sendTimer.running = true
 							bottomEdge.collapse()
 						} else {
 							console.log("tx error")
 						}
 					})
 				}
+			})
+		}
+	}
+
+	Timer {
+    id: sendTimer
+		running: false
+		repeat: false
+		interval: 2000
+
+		property var txId
+
+		onTriggered: {
+			python.call('backend.get_transaction_details', [txId], function(tx) {
+				txsModel.insert(0, JSON.parse(tx))
+				txsModel.remove(10)
 			})
 		}
 	}
