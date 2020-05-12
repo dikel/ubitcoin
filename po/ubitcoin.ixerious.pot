@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-11 16:53+0000\n"
+"POT-Creation-Date: 2020-05-12 21:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,24 +21,20 @@ msgstr ""
 msgid "uBitcoin"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:159
-msgid "Delete"
+#: ../qml/ui/HomePage.qml:188
+msgid "Open"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:171 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/HomePage.qml:204 ../qml/ui/SendPage.qml:23
 #: ../qml/ui/SendPage.qml:177
 msgid "Send"
-msgstr ""
-
-#: ../qml/ui/InfoPage.qml:13
-msgid "Informaion"
 msgstr ""
 
 #: ../qml/ui/ReceivePage.qml:18
 msgid "Receive"
 msgstr ""
 
-#: ../qml/ui/ReceivePage.qml:70
+#: ../qml/ui/ReceivePage.qml:70 ../qml/ui/SettingsPage.qml:47
 msgid "Copy to clipboard"
 msgstr ""
 
@@ -64,4 +60,8 @@ msgstr ""
 
 #: ../qml/ui/SendPage.qml:164
 msgid "Send all"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:13
+msgid "Settings"
 msgstr ""

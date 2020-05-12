@@ -3,7 +3,7 @@ import json
 from functools import reduce
 
 import pyqrcode
-from bitcash import PrivateKeyTestnet # Replace
+from bitcash import Key
 from bitcash.network import currency_to_satoshi_cached
 from bitcash.network import satoshi_to_currency_cached
 from bitcash.network import NetworkAPI
@@ -26,7 +26,6 @@ def create_path(filename):
         os.makedirs(dirname)
 
 def get_balance(fiat='usd'):
-	#BitpayRates.currency_to_satoshi('usd')
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
 
@@ -34,7 +33,7 @@ def get_all_transaction_ids():
 	return key.get_transactions()
 
 def get_transaction_details(id):
-	transaction = NetworkAPI.get_transaction_testnet(id) # Remove testnet
+	transaction = NetworkAPI.get_transaction(id)
 	is_sent = key.address in list(map(lambda txin: txin.address, transaction.inputs))
 	address = None
 	amount = None
@@ -78,10 +77,10 @@ def send(address, amount):
 if key_exists():
 	print('Debug: key exists')
 	priv_key = open(PRIVATE_KEY, 'r')
-	key = PrivateKeyTestnet(priv_key.read())
+	key = Key(priv_key.read())
 else:
 	print('Debug: key does not exists')
-	key = PrivateKeyTestnet()
+	key = Key()
 	create_path(PRIVATE_KEY)
 	priv_key = open(PRIVATE_KEY, 'w')
 	priv_key.write(key.to_wif())

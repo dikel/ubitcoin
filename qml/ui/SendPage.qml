@@ -206,7 +206,11 @@ Page {
 		onTriggered: {
 			python.call('backend.get_transaction_details', [txId], function(tx) {
 				txsModel.insert(0, JSON.parse(tx))
-				txsModel.remove(10)
+				saveTxsModel()
+				// If there are more than 10 TXs remove the last
+				if (!!txsModel.get(10)) {
+					txsModel.remove(10)
+				}
 			})
 		}
 	}

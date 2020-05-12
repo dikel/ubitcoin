@@ -26,10 +26,10 @@ Page {
 
     trailingActionBar.actions: [
 			Action {
-				text: "Informatin"
-				iconName: "info"
+				text: "Settings"
+				iconName: "settings"
 				onTriggered: {
-					pageStack.push(Qt.resolvedUrl("InfoPage.qml"))
+					pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
 				}
 			},
 			Action {
@@ -41,6 +41,46 @@ Page {
 			}
     ]
   }
+
+	function updateTransactionList() {
+		python.call('backend.get_all_transaction_ids', [], function(txs) {
+			var last = txs[0]
+			console.log("New transactions: " + txs.length)
+			console.log("Old transactions: " + txsModel.count)
+			console.log("Last new TX: " + last)
+			console.log("Last old TX: " + txsModel.get(0).id)
+			if (txs.length > txsModel.count || last !== txsModel.get(0).id) {
+				for (var txid in txs.reverse()) {
+					python.call('backend.get_transaction_details', [txs[txid]], function(tx) {
+						var parsedTx = JSON.parse(tx)
+						tempTxsModel.insert(0, parsedTx)
+
+						// Update the model only after the last TX to improve the UX
+						if (parsedTx.id === last) {
+							txsModel.clear()
+							for (var i = 0; i < tempTxsModel.count; i++) {
+								txsModel.set(i, tempTxsModel.get(i))
+							}
+							updatingIndicator.running = false
+							tempTxsModel.clear()
+							saveTxsModel()
+						}
+					})
+				}
+			} else {
+				updatingIndicator.running = false
+			}
+		})
+	}
+
+	function saveTxsModel() {
+		var model = []
+		for (var i = 0; i < txsModel.count; i++) {
+			model.push(txsModel.get(i))
+		}
+		balanceSettings.txStore = JSON.stringify(model)
+		updatingIndicator.running = false
+	}
 
 	Component.onCompleted: {
 		if (balanceSettings.txStore) {
@@ -54,27 +94,7 @@ Page {
 			balanceSettings.fiatBalance = bal[1]
 		})
 
-		python.call('backend.get_all_transaction_ids', [], function(txs) {
-			var last = txs[0]
-			if (last !== txsModel.get(0)) {
-				for (var txid in txs.reverse()) {
-					python.call('backend.get_transaction_details', [txs[txid]], function(tx) {
-						var parsedTx = JSON.parse(tx)
-						tempTxsModel.insert(0, parsedTx)
-						if (parsedTx.id === last) {
-							txsModel = tempTxsModel
-							txListView.currentIndex = -1
-
-							var model = []
-							for (var i = 0; i < txsModel.count; i++) {
-								model.push(txsModel.get(i))
-							}
-							balanceSettings.txStore = JSON.stringify(model)
-						}
-					})
-				}
-			}
-		})
+		updateTransactionList()
 	}
 
   Label {
@@ -103,10 +123,20 @@ Page {
     horizontalAlignment: Label.AlignHCenter
   }
 
+	ActivityIndicator {
+	  id: updatingIndicator
+	  anchors {
+	    top: fiatBalanceLabel.bottom
+	    left: parent.left
+	    right: parent.right
+	  }
+		running: true
+	  }
+
   UbuntuListView {
 		id: txListView
 		anchors {
-			top: fiatBalanceLabel.bottom
+			top: updatingIndicator.bottom
       left: parent.left
       right: parent.right
       bottom: parent.bottom
@@ -118,17 +148,17 @@ Page {
 		delegate: ListItem {
 			Label {
 				id: txLabel
+				anchors {
+					top: parent.top
+					bottom: parent.bottom
+				}
 				text: address.split(':')[1].substr(0, 20) + '..'
-			}
-
-			Label {
-				anchors.top: txLabel.bottom
-				text: (!!is_sent ? "Sent" : "Received")
+				verticalAlignment: Label.AlignVCenter
 			}
 
 			Label {
 				id: txBchBalance
-				anchors{
+				anchors {
 					right: parent.right
 					rightMargin: units.gu(1)
 				}
@@ -150,13 +180,16 @@ Page {
 				}
 			}
 
-			leadingActions: ListItemActions {
+			trailingActions: ListItemActions {
 				actions: [
 					Action {
-						id: deleteAction
-						objectName: "deleteAction"
-						iconName: "delete"
-						text: i18n.tr("Delete")
+						id: externalLinkAction
+						iconName: "external-link"
+						text: i18n.tr("Open")
+
+						onTriggered: {
+							Qt.openUrlExternally("https://explorer.bitcoin.com/bch/tx/" + id)
+						}
 					}
 				]
 			}
@@ -188,16 +221,19 @@ Page {
 		}
   }
 
-  Timer {
-    id: balanceTimer
-    running: true
-    repeat: true
-    interval: 10000
-    onTriggered: {
-			python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
-				balanceSettings.bchBalance = bal[0]
-				balanceSettings.fiatBalance = bal[1]
-			})
-    }
-  }
+	// Move to background service and use socket
+  // Timer {
+  //   id: balanceTimer
+  //   running: true
+  //   repeat: true
+  //   interval: 10000
+  //   onTriggered: {
+	// 		updatingIndicator.running = true
+	// 		python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
+	// 			balanceSettings.bchBalance = bal[0]
+	// 			balanceSettings.fiatBalance = bal[1]
+	// 			updatingIndicator.running = false
+	// 		})
+  //   }
+  // }
 }
