@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-12 21:15+0000\n"
+"POT-Creation-Date: 2020-05-13 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,11 +21,11 @@ msgstr ""
 msgid "uBitcoin"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:188
+#: ../qml/ui/HomePage.qml:189
 msgid "Open"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:204 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/HomePage.qml:205 ../qml/ui/SendPage.qml:23
 #: ../qml/ui/SendPage.qml:177
 msgid "Send"
 msgstr ""

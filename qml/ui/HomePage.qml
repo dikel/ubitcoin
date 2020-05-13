@@ -44,11 +44,12 @@ Page {
 
 	function updateTransactionList() {
 		python.call('backend.get_all_transaction_ids', [], function(txs) {
+			if (!txs) {
+				updatingIndicator.running = false
+				return
+			}
+
 			var last = txs[0]
-			console.log("New transactions: " + txs.length)
-			console.log("Old transactions: " + txsModel.count)
-			console.log("Last new TX: " + last)
-			console.log("Last old TX: " + txsModel.get(0).id)
 			if (txs.length > txsModel.count || last !== txsModel.get(0).id) {
 				for (var txid in txs.reverse()) {
 					python.call('backend.get_transaction_details', [txs[txid]], function(tx) {
