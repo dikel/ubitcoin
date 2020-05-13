@@ -21,7 +21,7 @@ Page {
       right: parent.right
     }
     fontSize: "small"
-    text: "Version: 0.2"
+    text: "Version: 0.2.1"
     horizontalAlignment: Label.AlignHCenter
   }
 

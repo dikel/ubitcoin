@@ -9,7 +9,7 @@
             "desktop":  "ubitcoin.desktop"
         }
     },
-    "version": "0.2",
+    "version": "0.2.1",
     "maintainer": "ixerious <dikelito@tutamail.com>",
     "framework" : "ubuntu-sdk-16.04"
 }
