@@ -6,10 +6,11 @@
     "hooks": {
         "ubitcoin": {
             "apparmor": "ubitcoin.apparmor",
-            "desktop":  "ubitcoin.desktop"
+            "desktop":  "ubitcoin.desktop",
+            "urls": "app-dispatcher.json"
         }
     },
-    "version": "0.2.1",
+    "version": "0.3.2",
     "maintainer": "ixerious <dikelito@tutamail.com>",
     "framework" : "ubuntu-sdk-16.04"
 }

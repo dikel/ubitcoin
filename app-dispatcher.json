@@ -1,0 +1,9 @@
+[
+	{
+		"protocol": "bitcoincash"
+	},
+	{
+		"protocol": "https",
+		"domain-suffix": "bitcoin.com"
+	}
+]
