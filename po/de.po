@@ -1,0 +1,68 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the ubitcoin.ixerious package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ubitcoin.ixerious\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-15 16:54+0000\n"
+"PO-Revision-Date: 2020-09-19 05:08+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: Malte Kiefer <malte.kiefer@mailgermania.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+#: ../qml/ui/HomePage.qml:25 ubitcoin.desktop.in.h:1
+msgid "uBitcoin"
+msgstr "uBitcoin"
+
+#: ../qml/ui/HomePage.qml:189
+msgid "Open"
+msgstr "Öffnen"
+
+#: ../qml/ui/HomePage.qml:205 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/SendPage.qml:177
+msgid "Send"
+msgstr "Senden"
+
+#: ../qml/ui/ReceivePage.qml:18
+msgid "Receive"
+msgstr "Empfangen"
+
+#: ../qml/ui/ReceivePage.qml:70 ../qml/ui/SettingsPage.qml:47
+msgid "Copy to clipboard"
+msgstr "In Zwischenablage kopieren"
+
+#: ../qml/ui/SendPage.qml:41
+msgid "Send To:"
+msgstr "Senden an:"
+
+#: ../qml/ui/SendPage.qml:46
+msgid "bitcoincash:"
+msgstr "bitcoincash:"
+
+#: ../qml/ui/SendPage.qml:70
+msgid "Paste"
+msgstr "Einfügen"
+
+#: ../qml/ui/SendPage.qml:87
+msgid "Scan QR"
+msgstr "QR-Code scannen"
+
+#: ../qml/ui/SendPage.qml:103
+msgid "Amount:"
+msgstr "Betrag:"
+
+#: ../qml/ui/SendPage.qml:164
+msgid "Send all"
+msgstr "Alles Senden"
+
+#: ../qml/ui/SettingsPage.qml:13
+msgid "Settings"
+msgstr "Einstellungen"
