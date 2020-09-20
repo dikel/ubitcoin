@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-15 16:54+0000\n"
+"POT-Creation-Date: 2020-09-20 16:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/ui/HomePage.qml:25 ubitcoin.desktop.in.h:1
+#: ../qml/ui/HomePage.qml:17 ubitcoin.desktop.in.h:1
 msgid "uBitcoin"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:189
+#: ../qml/ui/HomePage.qml:181
 msgid "Open"
 msgstr ""
 
-#: ../qml/ui/HomePage.qml:205 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/HomePage.qml:197 ../qml/ui/SendPage.qml:23
 #: ../qml/ui/SendPage.qml:177
 msgid "Send"
 msgstr ""
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Receive"
 msgstr ""
 
-#: ../qml/ui/ReceivePage.qml:70 ../qml/ui/SettingsPage.qml:47
+#: ../qml/ui/ReceivePage.qml:70
 msgid "Copy to clipboard"
 msgstr ""
 
@@ -62,6 +62,26 @@ msgstr ""
 msgid "Send all"
 msgstr ""
 
-#: ../qml/ui/SettingsPage.qml:13
+#: ../qml/ui/SettingsPage.qml:15
 msgid "Settings"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:33
+msgid "<b>General</b>"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:37
+msgid "Your currency?"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:63
+msgid "<b>Donate (click on the address to copy)</b>"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:70
+msgid "<b>Information</b>"
+msgstr ""
+
+#: ../qml/ui/SettingsPage.qml:73
+msgid "Version"
 msgstr ""

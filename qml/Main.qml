@@ -14,6 +14,17 @@ MainView {
   width: units.gu(45)
   height: units.gu(75)
 
+  Settings {
+		id: settings
+		property string userCurrency: "USD"
+		property string userCurrencyCode: "usd"
+		property int currentIndex: 5
+		property string bchBalance: "0.0"
+		property string fiatBalance: "0.0"
+		property string txStore: "[]"
+		property string version: "0.2.1"
+	}
+
   PageStack {
     id: mainPageStack
 

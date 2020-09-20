@@ -11,14 +11,6 @@ Page {
 	property ListModel txsModel: ListModel {}
 	property ListModel tempTxsModel: ListModel {}
 
-	Settings {
-		id: balanceSettings
-		property string fiat: "usd"
-		property string bchBalance: "0.0"
-		property string fiatBalance: "0.0"
-		property string txStore: "[]"
-	}
-
   anchors.fill: parent
   header: PageHeader {
     id: header
@@ -79,20 +71,20 @@ Page {
 		for (var i = 0; i < txsModel.count; i++) {
 			model.push(txsModel.get(i))
 		}
-		balanceSettings.txStore = JSON.stringify(model)
+		settings.txStore = JSON.stringify(model)
 		updatingIndicator.running = false
 	}
 
 	Component.onCompleted: {
-		if (balanceSettings.txStore) {
-			var model = JSON.parse(balanceSettings.txStore)
+		if (settings.txStore) {
+			var model = JSON.parse(settings.txStore)
 			for (var i = 0; i < model.length; i++) {
 				txsModel.append(model[i])
 			}
 		}
-    python.call('backend.get_balance', [balanceSettings.fiat], function(bal) {
-			balanceSettings.bchBalance = bal[0]
-			balanceSettings.fiatBalance = bal[1]
+    python.call('backend.get_balance', [settings.userCurrencyCode], function(bal) {
+			settings.bchBalance = bal[0]
+			settings.fiatBalance = bal[1]
 		})
 
 		updateTransactionList()
@@ -105,7 +97,7 @@ Page {
       left: parent.left
       right: parent.right
     }
-    text: balanceSettings.bchBalance + " BCH"
+    text: settings.bchBalance + " BCH"
     fontSize: "x-large"
     horizontalAlignment: Label.AlignHCenter
   }
@@ -118,7 +110,7 @@ Page {
       right: parent.right
 			bottomMargin: units.gu(2)
     }
-    text: balanceSettings.fiatBalance + " " + balanceSettings.fiat
+    text: settings.fiatBalance + " " + settings.userCurrency
     fontSize: "large"
     font.capitalization: Font.AllUppercase
     horizontalAlignment: Label.AlignHCenter
@@ -175,8 +167,8 @@ Page {
 				}
 				font.capitalization: Font.AllUppercase
 				Component.onCompleted: {
-			    python.call('backend.bch_to_fiat', [amount, balanceSettings.fiat], function(bal) {
-						text = bal + " " + balanceSettings.fiat
+			    python.call('backend.bch_to_fiat', [amount, settings.userCurrencyCode], function(bal) {
+						text = bal + " " + settings.userCurrency
 					})
 				}
 			}

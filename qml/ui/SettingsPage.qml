@@ -1,51 +1,79 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.2
-import Ubuntu.Components 1.3
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import io.thp.pyotherside 1.3
+import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
+import Ubuntu.Components.ListItems 1.3 as ListItem
 
 Page {
+    id: settingsPage
+    property int showDebug
 
-  anchors.fill: parent
-  header: PageHeader {
-    id: header
-    title: i18n.tr('Settings')
-  }
-
-  Label {
-    id: version
-    anchors {
-      top: header.bottom
-      left: parent.left
-      right: parent.right
+    header: PageHeader {
+    title: i18n.tr("Settings")
+    flickable: flickable
     }
-    fontSize: "small"
-    text: "Version: 0.2.1"
-    horizontalAlignment: Label.AlignHCenter
-  }
 
-  Label {
-    id: donationAddress
-    anchors {
-      top: version.bottom
-      left: parent.left
-      right: parent.right
-			topMargin: units.gu(4)
+    Rectangle {
+        height: units.gu(24)
     }
-    text: "Donation address:\nbitcoincash:\nqr90ln6knmmzct8shekm27xj9xnlpes9uglhtcv5xn"
-    horizontalAlignment: Label.AlignHCenter
-  }
+    Flickable {
+        anchors.fill: parent
+        contentHeight: settingsPage.childrenRect.height
 
-  Button {
-		id: copyDonationAddressToClipboard
-		anchors {
-			top: donationAddress.bottom
-			topMargin: units.gu(2)
-      horizontalCenter: parent.horizontalCenter
-		}
-		text: i18n.tr('Copy to clipboard')
-		onClicked: Clipboard.push("bitcoincash:qr90ln6knmmzct8shekm27xj9xnlpes9uglhtcv5xn")
-		color: theme.palette.normal.positive
-	}
+        Column {
+            anchors.fill: parent
+
+            ListItem.SingleValue {
+            }
+
+            ListItem.SingleValue {
+                text: i18n.tr("<b>General</b>")
+            }
+
+            ListItem.Standard {
+                text: i18n.tr("Your currency?")
+                enabled: true
+                control: ComboBox {
+                            id: currency
+                            height: units.gu(5)
+                            width: units.gu(20)
+                            currentIndex: settings.currentIndex
+                            textRole: "text"
+                            model: ListModel {
+                                id: currencyModel
+                                ListElement { text: "BRL";  currency: "brl" }
+                                ListElement { text: "CHF";  currency: "chf"}
+                                ListElement { text: "EUR";  currency: "eur"}
+                                ListElement { text: "GBP";  currency: "gbp" }
+                                ListElement { text: "ISK";  currency: "isk"}
+                                ListElement { text: "USD";  currency: "usd"}
+                            }
+                            onCurrentIndexChanged: {
+                                settings.currentIndex = currency.currentIndex
+                                settings.userCurrency = currencyModel.get(currentIndex).text
+                                settings.userCurrencyCode = currencyModel.get(currentIndex).currency
+                            }
+
+                        }
+            }
+            ListItem.SingleValue {
+                text: i18n.tr("<b>Donate (click on the address to copy)</b>")
+            }
+            ListItem.SingleValue {
+                text: "bitcoincash:qr90ln6knmmzct8shekm27xj9xnlpes9uglhtcv5xn"
+                onClicked: Clipboard.push("bitcoincash:qr90ln6knmmzct8shekm27xj9xnlpes9uglhtcv5xn")
+            }
+            ListItem.SingleValue {
+                text: i18n.tr("<b>Information</b>")
+            }
+            ListItem.SingleValue {
+                text: i18n.tr("Version")
+                value: settings.version
+            }
+        }
+    }
+
 }

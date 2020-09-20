@@ -117,7 +117,7 @@ Page {
 			if(focus) {
 				color = theme.palette.normal.baseText
 				if(text){
-					python.call('backend.bch_to_fiat', [text, balanceSettings.fiat], function(fiat) {
+					python.call('backend.bch_to_fiat', [text, settings.userCurrencyCode], function(fiat) {
 						fiatAmountField.text = fiat
 					})
 				} else {
@@ -135,7 +135,7 @@ Page {
       right: sendToField.right
 			topMargin: units.gu(1)
 		}
-		placeholderText: balanceSettings.fiat
+		placeholderText: settings.userCurrency
     font.capitalization: Font.AllUppercase
 		text: ""
 		width: units.gu(16)
@@ -143,7 +143,7 @@ Page {
 			if(focus) {
 				color = theme.palette.normal.baseText
 				if(text){
-					python.call('backend.fiat_to_bch', [text, balanceSettings.fiat], function(bch) {
+					python.call('backend.fiat_to_bch', [text, settings.userCurrencyCode], function(bch) {
 						bchAmountField.text = bch
 					})
 				} else {
@@ -180,7 +180,7 @@ Page {
 		onClicked: {
 			isAddressValid(function(isValid) {
 				const amount = parseFloat(bchAmountField.text)
-				if (isValid && !!amount && amount > 0 && amount < balanceSettings.bchBalance && !sendTimer.running) {
+				if (isValid && !!amount && amount > 0 && amount < settings.bchBalance && !sendTimer.running) {
 					python.call('backend.send', [sendToField.text, amount], function(txId) {
 						if(!!txId) {
 							sendTimer.txId = txId
