@@ -7,26 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ubitcoin.ixerious\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-15 16:54+0000\n"
-"PO-Revision-Date: 2020-09-19 05:08+0200\n"
+"POT-Creation-Date: 2020-09-20 16:03+0000\n"
+"PO-Revision-Date: 2020-09-21 05:15+0200\n"
+"Last-Translator: Malte Kiefer <malte.kiefer@mailgermania.de>\n"
 "Language-Team: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.4.1\n"
-"Last-Translator: Malte Kiefer <malte.kiefer@mailgermania.de>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: de\n"
 
-#: ../qml/ui/HomePage.qml:25 ubitcoin.desktop.in.h:1
+#: ../qml/ui/HomePage.qml:17 ubitcoin.desktop.in.h:1
 msgid "uBitcoin"
 msgstr "uBitcoin"
 
-#: ../qml/ui/HomePage.qml:189
+#: ../qml/ui/HomePage.qml:181
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../qml/ui/HomePage.qml:205 ../qml/ui/SendPage.qml:23
+#: ../qml/ui/HomePage.qml:197 ../qml/ui/SendPage.qml:23
 #: ../qml/ui/SendPage.qml:177
 msgid "Send"
 msgstr "Senden"
@@ -35,7 +35,7 @@ msgstr "Senden"
 msgid "Receive"
 msgstr "Empfangen"
 
-#: ../qml/ui/ReceivePage.qml:70 ../qml/ui/SettingsPage.qml:47
+#: ../qml/ui/ReceivePage.qml:70
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
 
@@ -63,6 +63,26 @@ msgstr "Betrag:"
 msgid "Send all"
 msgstr "Alles Senden"
 
-#: ../qml/ui/SettingsPage.qml:13
+#: ../qml/ui/SettingsPage.qml:15
 msgid "Settings"
 msgstr "Einstellungen"
+
+#: ../qml/ui/SettingsPage.qml:33
+msgid "<b>General</b>"
+msgstr "<b>Allgemein</b>"
+
+#: ../qml/ui/SettingsPage.qml:37
+msgid "Your currency?"
+msgstr "Deine Währung?"
+
+#: ../qml/ui/SettingsPage.qml:63
+msgid "<b>Donate (click on the address to copy)</b>"
+msgstr "<b>Spenden (Klick auf die Adresse um diese zu kopieren)</b>"
+
+#: ../qml/ui/SettingsPage.qml:70
+msgid "<b>Information</b>"
+msgstr "<b>Informationen</b>"
+
+#: ../qml/ui/SettingsPage.qml:73
+msgid "Version"
+msgstr "Version"
