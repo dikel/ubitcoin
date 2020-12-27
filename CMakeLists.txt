@@ -43,6 +43,7 @@ install(FILES ${PROJECT_NAME}.apparmor DESTINATION ${DATA_DIR})
 install(DIRECTORY qml DESTINATION ${DATA_DIR})
 install(DIRECTORY assets DESTINATION ${DATA_DIR})
 install(DIRECTORY backend DESTINATION ${DATA_DIR})
+install(FILES app-dispatcher.json DESTINATION ${DATA_DIR})
 
 # Translations
 file(GLOB_RECURSE I18N_SRC_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/po qml/*.qml qml/*.js)
@@ -64,6 +65,9 @@ add_custom_target(${DESKTOP_FILE_NAME} ALL
 )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE_NAME} DESTINATION ${DATA_DIR})
+
+set(qzxing_DIR "${CMAKE_BINARY_DIR}/../qzxing/src")
+find_package(qzxing REQUIRED)
 
 add_subdirectory(po)
 

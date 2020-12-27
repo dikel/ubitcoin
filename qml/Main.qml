@@ -21,25 +21,11 @@ MainView {
 		property int currentIndex: 5
 		property string bchBalance: "0.0"
 		property string fiatBalance: "0.0"
-		property string txStore: "[]"
 		property string version: "0.2.1"
 	}
 
   PageStack {
     id: mainPageStack
-
-    Connections {
-        target: UriHandler
-
-        onOpened: {
-            console.log('Open from UriHandler')
-
-            if (uris.length > 0) {
-                console.log('Incoming call from UriHandler ' + uris[0]);
-                console.log(uris)
-            }
-        }
-    }
   }
   Component.onCompleted: {
 	   mainPageStack.push(Qt.resolvedUrl("ui/HomePage.qml"))

@@ -7,6 +7,7 @@ from bitcash import Key
 from bitcash.network import currency_to_satoshi_cached
 from bitcash.network import satoshi_to_currency_cached
 from bitcash.network import NetworkAPI
+from bitcash.transaction import estimate_tx_fee
 from cashaddress import convert
 
 from backend.config import PRIVATE_KEY
@@ -29,31 +30,6 @@ def get_balance(fiat='usd'):
 	key.get_balance()
 	return key.balance_as('bch'), key.balance_as(fiat)
 
-def get_all_transaction_ids():
-	return key.get_transactions()
-
-def get_transaction_details(id):
-	transaction = NetworkAPI.get_transaction(id)
-	is_sent = key.address in list(map(lambda txin: txin.address, transaction.inputs))
-	address = None
-	amount = None
-	if is_sent:
-		address = list(map(lambda txout: txout.address, transaction.outputs))[0]
-		amount = '{:f}'.format(transaction.outputs[0].amount + transaction.amount_fee)
-	else:
-		address = list(map(lambda txin: txin.address, transaction.inputs))[0]
-		amount = '{:f}'.format(next(txout.amount for txout in transaction.outputs if txout.address == key.address))
-
-	amount = satoshi_to_currency_cached(int(amount), 'bch')
-	tx = {'id': transaction.txid,
-		'inputs': list(map(lambda txin: '{:f}'.format(txin.amount), transaction.inputs)),
-		'outputs': list(map(lambda txout: '{:f}'.format(txout.amount), transaction.outputs)),
-		'is_sent': is_sent,
-		'address': address,
-		'amount': amount}
-	jsontx = json.dumps(tx)
-	return jsontx
-
 def bch_to_fiat(amount, fiat='usd'):
 	satoshi = currency_to_satoshi_cached(amount, 'bch')
 	return satoshi_to_currency_cached(satoshi, fiat)
@@ -73,6 +49,9 @@ def send(address, amount):
 		return key.send(outputs)
 	except:
 		return false
+
+def get_max_balance():
+	return key.balance - estimate_tx_fee(len(key.get_unspents()), 1, 1, key.is_compressed)
 
 if key_exists():
 	print('Debug: key exists')
